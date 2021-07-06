@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="CSS/reset_css.css">
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+
+</head>
+<body>
+    
+    <header>
+        <input type="text" placeholder="Ingresa una actividad" id="item">
+        <button id="add"><svg aria-hidden="true" data-prefix="fal" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="fill"><path fill="currentColor" d="M376 232H216V72c0-4.42-3.58-8-8-8h-32c-4.42 0-8 3.58-8 8v160H8c-4.42 0-8 3.58-8 8v32c0 4.42 3.58 8 8 8h160v160c0 4.42 3.58 8 8 8h32c4.42 0 8-3.58 8-8V280h160c4.42 0 8-3.58 8-8v-32c0-4.42-3.58-8-8-8z"></path></svg></button>
+    </header>
+
+    <div class="container">
+        <ul class="todo" id="todo"></ul>
+   
+
+  
+        <ul class= "todo" id="complete"></ul> 
+
+    </div>
+
+    <!-- Java Script -->
+    <script src="JS/main.js"></script>
+</body>
+</html>
