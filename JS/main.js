@@ -6,33 +6,76 @@ let completeSVG =
   '<svg aria-hidden="true" data-prefix="fal" data-icon="check-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-check-circle fa-w-16 fa-7x fill"><path fill="currentColor" d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664 0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705 4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667 12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451 8.52c4.668 4.705 4.637 12.303-.068 16.97z" class="fill"></path></svg>';
 let buttonAdd = document.getElementById("add");
 let textField = document.getElementById("item");
+
+let data = (localStorage.getItem("listaTodo")) ? JSON.parse(localStorage.getItem("listaTodo")):{
+  todo: [],
+  complete: [],
+};
+
+renderTodoList()
+
+console.log(data);
+
+function renderTodoList () {
+    if(!data.todo.length && !data.complete.length) return;
+
+    for (let i=0; i < data.todo.length; i++) {
+        let value = data.todo[i]
+        addItemTodo(value)
+
+    }
+
+    for (let j = 0; j< data.complete.length; j++) {
+        let value = data.complete[j];
+        addItemTodo(value, true);
+    }
+}
+
 //Usuario clickea en el botton de agregado
 //Solo si hay texto en el campo de todo list
 
 buttonAdd.addEventListener("click", function () {
   let value = document.getElementById("item").value;
   if (value) {
-    addItemTodo(value);
-
-    document.getElementById("item").value = "";
+    addItem(value)
   }
 });
 
 textField.addEventListener("keypress", function (e) {
   let value = document.getElementById("item").value;
 
-  if (e.key === "Enter") {
+  if (e.key === "Enter" && value) {
+    addItem(value)
+  }
+  
+});
+
+
+function dataObjectUpdate (){
+    localStorage.setItem("listaTodo", JSON.stringify(data))
+    
+}
+
+function addItem (value) {
     addItemTodo(value);
     document.getElementById("item").value = "";
-
-    console.log(e);
-  }
-});
+    data.todo.push(value);
+    dataObjectUpdate();
+}
 
 function removeItem() {
   let item = this.parentNode.parentNode;
   let parent = item.parentNode;
+  let id = parent.id;
+  let value = parent.innerText;
 
+  if (id === "todo") {
+    data.todo.splice(data.todo.indexOf(value), 1);
+  } else {
+    data.complete.splice(data.complete.indexOf(value), 1);
+  }
+  
+  dataObjectUpdate ()
   parent.removeChild(item);
 }
 
@@ -40,19 +83,34 @@ function completeItem() {
   let item = this.parentNode.parentNode;
   let parent = item.parentNode;
   let id = parent.id;
+  let value = item.innerText;
 
+  //Cambia del array TODO al Complete
+  if (id === "todo") {
+    data.todo.splice(data.todo.indexOf(value), 1);
+    data.complete.push(value);
+  } else {
+    data.complete.splice(data.complete.indexOf(value), 1);
+    data.todo.push(value);
+  }
+  
+ 
   //Revisa si el item deberia ser agregado a la lista de por hacer o ya esta echo. Puede volver a ir a la lista de volver a hacer
   let target =
     id === "todo"
       ? document.getElementById("complete")
       : document.getElementById("todo");
 
+      dataObjectUpdate ()
   parent.removeChild(item);
   target.insertBefore(item, target.childNodes[0]);
+
 }
 
-function addItemTodo(item) {
-  let list = document.getElementById("todo");
+//Funcion que agrega al HTML
+
+function addItemTodo(item, completed) {
+  let list = (completed) ? document.getElementById("complete"):document.getElementById("todo");
 
   let todo = document.createElement("li");
   todo.innerText = item;
@@ -74,8 +132,12 @@ function addItemTodo(item) {
   //Agregar click event para cuando completas
   complete.addEventListener("click", completeItem);
 
+  
+
   buttons.appendChild(remove);
   buttons.appendChild(complete);
   todo.appendChild(buttons);
   list.insertBefore(todo, list.childNodes[0]);
+
+  dataObjectUpdate ()
 }
