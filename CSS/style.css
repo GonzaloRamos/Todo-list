@@ -73,11 +73,14 @@ header button {
 header button svg {
     width: 25px;
     height: 25px;
-    position: absolute;
-    bottom: 13px;
-    right: 13px;
-    left: 13.5px;
-    top: 13px;
+    position: relative;
+    top: 0;
+    left: 0;
+    /* position: absolute; */
+    /* bottom: 13px; */
+    /* right: 13px; */
+    /* left: 13.5px; */
+    /* top: 13px; */
 }
 
 .container {
@@ -186,7 +189,7 @@ ul.todo li .buttons button.complete svg.fill path {
     fill: rgb(1, 228, 1);
 }
 
-ul.todo#completed li .buttons button.complete svg {
+ul.todo#complete li .buttons button.complete svg {
     background: green;
     border: 0px;
     border-radius: 11px;
@@ -195,33 +198,53 @@ ul.todo#completed li .buttons button.complete svg {
  
 }
 
-ul.todo#completed li .buttons button.complete svg.fill path {
+ul.todo#complete li .buttons button.complete svg.fill path {
     fill: #fff;
 }
 
 
-ul.todo:not(#completed) li .buttons button.complete:hover svg {
+ul.todo:not(#complete) li .buttons button.complete:hover svg {
     background: rgb(1, 223, 1);
     border-radius: 11px;
 
 }
 
-ul.todo:not(#completed) li .buttons button.complete:hover svg.fill path {
+ul.todo:not(#complete) li .buttons button.complete:hover svg.fill path {
     fill: #fff;
 }
 
-ul.todo#complete:not(:empty) {
+ul.todo#complete {
     position: relative;
     padding: 60px 0 0 0 ;
 }
 
-ul.todo#complete:not(:empty):before {
+ul.todo#complete:before {
     content: "";
-    width: 150px;
+    width: 350px;
     height: 1px;
-    background: black;
+    background: #aaa;
     position: absolute;
     top: 30px;
     left: 50%;
-    margin: 0 0 0 -75px;
+    margin: 0 0 0 -170px;
+}
+
+
+ul.todo#todo:empty:after{
+    content:"¡No tenes nada que hacer! 🎉";
+    margin: 15px 0 0 0;
+}
+
+ul.todo#complete:empty:after {
+    content: "No tenes ninguna tarea completa 😥" ;
+
+}
+
+ul.todo#todo::after,
+ul.todo#complete::after {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    color:#aaa;
 }
